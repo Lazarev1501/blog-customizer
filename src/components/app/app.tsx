@@ -1,26 +1,29 @@
-import { CSSProperties } from 'react';
-import clsx from 'clsx';
-
-import { Article } from '../article/Article';
-import { ArticleParamsForm } from '../article-params-form/ArticleParamsForm';
-import { defaultArticleState } from './../../constants/articleProps';
-
-import styles from './app.module.scss';
+import styles from './App.module.scss';
+import { useState, CSSProperties } from 'react';
+import { Article } from 'components/article';
+import { ArticleParamsForm } from 'components/article-params-form';
+import {
+	ArticleStateType,
+	defaultArticleState,
+} from 'src/constants/articleProps';
 
 export const App = () => {
+	const [styleArticle, setStyleArticle] =
+		useState<ArticleStateType>(defaultArticleState);
+
 	return (
 		<main
-			className={clsx(styles.main)}
+			className={styles.main}
 			style={
 				{
-					'--font-family': defaultArticleState.fontFamilyOption.value,
-					'--font-size': defaultArticleState.fontSizeOption.value,
-					'--font-color': defaultArticleState.fontColor.value,
-					'--container-width': defaultArticleState.contentWidth.value,
-					'--bg-color': defaultArticleState.backgroundColor.value,
+					'--font-family': styleArticle.fontFamilyOption.value,
+					'--font-size': styleArticle.fontSizeOption.value,
+					'--font-color': styleArticle.fontColor.value,
+					'--container-width': styleArticle.contentWidth.value,
+					'--bg-color': styleArticle.backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm />
+			<ArticleParamsForm onChange={setStyleArticle} />
 			<Article />
 		</main>
 	);
