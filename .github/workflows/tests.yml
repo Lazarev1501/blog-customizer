@@ -14,13 +14,21 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 20
+
     - name: Check if the repository is private
       if: ${{github.event.repository.private}}
       run: exit 1
+
+    # НОВЫЙ ШАГ: устанавливаем зависимости проекта
+    - name: Install project dependencies
+      run: npm ci
+
     - name: Get testing lib
       run: set -eu && git clone https://github.com/Yandex-Practicum/tests-blog-customizer.git /tmp/tests-blog-customizer
+
     - name: Run tests
       run: bash /tmp/tests-blog-customizer/run.sh
+
     - uses: actions/upload-artifact@v4
       if: always()
       with:
