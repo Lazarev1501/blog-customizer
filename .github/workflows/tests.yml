@@ -10,58 +10,18 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
       with:
         node-version: 20
-
     - name: Check if the repository is private
       if: ${{github.event.repository.private}}
       run: exit 1
-
-    # 1. Устанавливаем зависимости вашего проекта
-    - name: Install project dependencies
-      run: npm ci
-
-    # 2. Клонируем тестовый репозиторий
     - name: Get testing lib
       run: set -eu && git clone https://github.com/Yandex-Practicum/tests-blog-customizer.git /tmp/tests-blog-customizer
-
-    # 3. Устанавливаем зависимости тестов
-    - name: Install test dependencies
-      run: |
-        cd /tmp/tests-blog-customizer
-        npm ci
-
-    # 4. Устанавливаем браузеры Playwright вручную (без системных зависимостей)
-    - name: Install Playwright browsers
-      run: |
-        cd /tmp/tests-blog-customizer
-        npx playwright install chromium
-
-    # 5. Устанавливаем системные зависимости для браузеров отдельно
-    - name: Install system dependencies for browsers
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          libnss3 \
-          libxss1 \
-          libasound2t64 \
-          libatk-bridge2.0-0 \
-          libgtk-3-0 \
-          libdrm2 \
-          libgbm1 \
-          libxkbcommon0 \
-          libpango-1.0-0 \
-          libcairo2
-
-    # 6. Запускаем тесты
     - name: Run tests
       run: bash /tmp/tests-blog-customizer/run.sh
-      env:
-        PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
-
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: report
