@@ -19,12 +19,19 @@ jobs:
       if: ${{github.event.repository.private}}
       run: exit 1
 
-    # НОВЫЙ ШАГ: устанавливаем зависимости проекта
+    # Устанавливаем зависимости вашего проекта
     - name: Install project dependencies
       run: npm ci
 
     - name: Get testing lib
       run: set -eu && git clone https://github.com/Yandex-Practicum/tests-blog-customizer.git /tmp/tests-blog-customizer
+
+    # Устанавливаем браузеры для Playwright
+    - name: Install Playwright browsers
+      run: |
+        cd /tmp/tests-blog-customizer
+        npm ci
+        npx playwright install chromium --with-deps
 
     - name: Run tests
       run: bash /tmp/tests-blog-customizer/run.sh
