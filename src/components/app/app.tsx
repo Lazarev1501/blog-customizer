@@ -1,4 +1,4 @@
-import styles from './App.module.scss';
+import styles from './app.module.scss';
 import { useState, CSSProperties } from 'react';
 import { Article } from 'components/article';
 import { ArticleParamsForm } from 'components/article-params-form';
@@ -8,7 +8,7 @@ import {
 } from 'src/constants/articleProps';
 
 export const App = () => {
-	const [styleArticle, setStyleArticle] =
+	const [articleState, setArticleState] =
 		useState<ArticleStateType>(defaultArticleState);
 
 	return (
@@ -16,14 +16,14 @@ export const App = () => {
 			className={styles.main}
 			style={
 				{
-					'--font-family': styleArticle.fontFamilyOption.value,
-					'--font-size': styleArticle.fontSizeOption.value,
-					'--font-color': styleArticle.fontColor.value,
-					'--container-width': styleArticle.contentWidth.value,
-					'--bg-color': styleArticle.backgroundColor.value,
+					'--font-family': articleState.fontFamilyOption.value,
+					'--font-size': articleState.fontSizeOption.value,
+					'--font-color': articleState.fontColor.value,
+					'--container-width': articleState.contentWidth.value,
+					'--bg-color': articleState.backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm onChange={setStyleArticle} />
+			<ArticleParamsForm setArticleState={setArticleState} />
 			<Article />
 		</main>
 	);

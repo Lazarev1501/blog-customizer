@@ -24,19 +24,21 @@ import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
 
 export type ArticleParamsFormProps = {
-	onChange: React.Dispatch<React.SetStateAction<ArticleStateType>>;
+	setArticleState: React.Dispatch<React.SetStateAction<ArticleStateType>>;
 };
 
-export const ArticleParamsForm = ({ onChange }: ArticleParamsFormProps) => {
+export const ArticleParamsForm = ({
+	setArticleState,
+}: ArticleParamsFormProps) => {
 	const defaultStateForm = useRef<ArticleStateType>(defaultArticleState);
 	const asideRef = useRef<HTMLDivElement | null>(null);
 
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-	const [fontFamily, setfontFamily] = useState<OptionType>(
+	const [fontFamily, setFontFamily] = useState<OptionType>(
 		defaultStateForm.current.fontFamilyOption
 	);
-	const [fontSize, setfontSize] = useState<OptionType>(
+	const [fontSize, setFontSize] = useState<OptionType>(
 		defaultStateForm.current.fontSizeOption
 	);
 	const [backgroundColor, setBackgroundColor] = useState<OptionType>(
@@ -59,25 +61,25 @@ export const ArticleParamsForm = ({ onChange }: ArticleParamsFormProps) => {
 		setIsMenuOpen((prev) => !prev);
 	};
 
-	const changefontFamily = (option: OptionType) => {
-		setfontFamily(option);
+	const handleFontFamilyChange = (option: OptionType) => {
+		setFontFamily(option);
 	};
-	const changeFontSize = (option: OptionType) => {
-		setfontSize(option);
+	const handleFontSizeChange = (option: OptionType) => {
+		setFontSize(option);
 	};
-	const changeBackgroundColor = (option: OptionType) => {
+	const handleBackgroundColorChange = (option: OptionType) => {
 		setBackgroundColor(option);
 	};
-	const changeFontColor = (option: OptionType) => {
+	const handleFontColorChange = (option: OptionType) => {
 		setFontColor(option);
 	};
-	const changeContentWidth = (option: OptionType) => {
+	const handleContentWidthChange = (option: OptionType) => {
 		setContentWidth(option);
 	};
 
-	const handleOnSubmitForm = (e: SyntheticEvent) => {
+	const handleSubmit = (e: SyntheticEvent) => {
 		e.preventDefault();
-		onChange({
+		setArticleState({
 			fontFamilyOption: fontFamily,
 			fontColor: fontColor,
 			backgroundColor: backgroundColor,
@@ -86,11 +88,11 @@ export const ArticleParamsForm = ({ onChange }: ArticleParamsFormProps) => {
 		});
 	};
 
-	const handleOnClickButtonReset = () => {
-		onChange(defaultStateForm.current);
+	const handleReset = () => {
+		setArticleState(defaultStateForm.current);
 
-		setfontFamily(defaultStateForm.current.fontFamilyOption);
-		setfontSize(defaultStateForm.current.fontSizeOption);
+		setFontFamily(defaultStateForm.current.fontFamilyOption);
+		setFontSize(defaultStateForm.current.fontSizeOption);
 		setBackgroundColor(defaultStateForm.current.backgroundColor);
 		setFontColor(defaultStateForm.current.fontColor);
 		setContentWidth(defaultStateForm.current.contentWidth);
@@ -103,7 +105,7 @@ export const ArticleParamsForm = ({ onChange }: ArticleParamsFormProps) => {
 				className={clsx(styles.container, {
 					[styles.container_open]: isMenuOpen,
 				})}>
-				<form className={styles.form} onSubmit={handleOnSubmitForm}>
+				<form className={styles.form} onSubmit={handleSubmit}>
 					<Text as='h2' size={31} weight={800} uppercase>
 						Задайте параметры
 					</Text>
@@ -111,7 +113,7 @@ export const ArticleParamsForm = ({ onChange }: ArticleParamsFormProps) => {
 					<Select
 						options={fontFamilyOptions}
 						selected={fontFamily}
-						onChange={changefontFamily}
+						onChange={handleFontFamilyChange}
 						title='шрифт'
 					/>
 					<Spacing size={50} />
@@ -119,14 +121,14 @@ export const ArticleParamsForm = ({ onChange }: ArticleParamsFormProps) => {
 						name='font-size'
 						options={fontSizeOptions}
 						selected={fontSize}
-						onChange={changeFontSize}
+						onChange={handleFontSizeChange}
 						title='размер шрифта'
 					/>
 					<Spacing size={50} />
 					<Select
 						options={fontColors}
 						selected={fontColor}
-						onChange={changeFontColor}
+						onChange={handleFontColorChange}
 						title='цвет шрифта'
 					/>
 					<Spacing size={50} />
@@ -135,14 +137,14 @@ export const ArticleParamsForm = ({ onChange }: ArticleParamsFormProps) => {
 					<Select
 						options={backgroundColors}
 						selected={backgroundColor}
-						onChange={changeBackgroundColor}
+						onChange={handleBackgroundColorChange}
 						title='цвет фона'
 					/>
 					<Spacing size={50} />
 					<Select
 						options={contentWidthArr}
 						selected={contentWidth}
-						onChange={changeContentWidth}
+						onChange={handleContentWidthChange}
 						title='ширина контента'
 					/>
 					<Spacing size={207} />
@@ -150,9 +152,10 @@ export const ArticleParamsForm = ({ onChange }: ArticleParamsFormProps) => {
 						<Button
 							title='Сбросить'
 							type='reset'
-							onClick={handleOnClickButtonReset}
+							variant='clear'
+							onClick={handleReset}
 						/>
-						<Button title='Применить' type='submit' />
+						<Button title='Применить' type='submit' variant='apply' />
 					</div>
 				</form>
 			</aside>
